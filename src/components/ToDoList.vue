@@ -16,16 +16,12 @@
     </todo-item>
     </transition-group>
     <div class="extra-container">
-      <div><label><input type="checkbox" :checked="!anyRemainning" @change="checkAllTodos">Check All</label></div>
+      <todo-check-all :any-remainning="anyRemainning"></todo-check-all>
       <todo-items-remaining :remaining="remaining"></todo-items-remaining>
     </div>
 
    <div class="extra-container">
-     <div>
-       <button :class="{ active: filter == 'all' }" @click="filter= 'all'">All</button>
-       <button :class="{ active: filter == 'all' }" @click="filter= 'active'">active</button>
-       <button :class="{ active: filter == 'all' }" @click="filter= 'Completed'">Completed</button>
-     </div>
+   <todo-filtered></todo-filtered>
 
    <div>
      <transition name="fade">
@@ -40,12 +36,16 @@
 <script>
 import TodoItem from "./TodoItem";
 import TodoItemsRemaining from "./TodoItemsRemaining";
+import TodoCheckAll from "./TodoCheckAll";
+import TodoFiltered from "./TodoFiltered";
 
 export default {
   name: 'ToDo-list',
   components: {
+    TodoCheckAll,
     TodoItem,
     TodoItemsRemaining,
+    TodoFiltered,
   },
   data () {
     return {
@@ -72,6 +72,8 @@ export default {
   created() {
     eventBus.$on('removedTodo', (index) => this.removeTodo(index))
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
+    eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
+    eventBus.$on('filterChanged', (filter) => this.filter = filter)
   },
   computed: {
     remainning() {
