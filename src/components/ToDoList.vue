@@ -2,7 +2,7 @@
   <div>
      <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-    <todo-item v-for="(todo, index) in todosFiltred" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemainning" @removedTodo="removeTodo" @finishedEdit="finishedEdit">
+    <todo-item v-for="(todo, index) in todosFiltred" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemainning">
 
 <!--      <div class="todo-item-left">
         <input type="checkbox" v-model="todo.completed">
@@ -17,7 +17,7 @@
     </transition-group>
     <div class="extra-container">
       <div><label><input type="checkbox" :checked="!anyRemainning" @change="checkAllTodos">Check All</label></div>
-      <div> {{ remainning }} items left</div>
+      <todo-items-remaining :remaining="remaining"></todo-items-remaining>
     </div>
 
    <div class="extra-container">
@@ -39,11 +39,13 @@
 
 <script>
 import TodoItem from "./TodoItem";
+import TodoItemsRemaining from "./TodoItemsRemaining";
 
 export default {
   name: 'ToDo-list',
   components: {
     TodoItem,
+    TodoItemsRemaining,
   },
   data () {
     return {
@@ -66,6 +68,10 @@ export default {
         },
       ]
     }
+  },
+  created() {
+    eventBus.$on('removedTodo', (index) => this.removeTodo(index))
+    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
   },
   computed: {
     remainning() {
