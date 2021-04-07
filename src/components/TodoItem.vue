@@ -5,8 +5,11 @@
       <div v-if="!editing" @dblclick="editTodo" class="todo-item-label" :class="{ completed : completed }">{{todo.title}}</div>
       <input v-else class="todo-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
     </div>
-    <div class="remove-item" @click="removeTodo(index)">
+    <div>
+    <button @click="pluralize">Plural</button>
+    <span class="remove-item" @click="removeTodo(index)">
       &times;
+    </span>
     </div>
 
   </div>
@@ -20,7 +23,7 @@ export default {
       type: Object,
       required: true,
     },
-    index:{
+    index: {
       type: Number,
       required: true,
     },
@@ -39,6 +42,10 @@ export default {
 
     }
   },
+  created() {
+    eventBus.$on('pluralize', this.handlePluralize)
+  },
+
   watch: {
     checkAll() {
       if (this.checkAll) {
@@ -49,8 +56,8 @@ export default {
     }
   },
   directive: {
-    focus:{
-      inserted:function (el) {
+    focus: {
+      inserted: function (el) {
         el.focus()
       }
     }
@@ -65,7 +72,7 @@ export default {
     },
     doneEdit() {
       if (this.title.trim() == '') {
-        this.title =this.beforeEditCache
+        this.title = this.beforeEditCache
       }
       this.editing = false
       eventBus.$emit('finishedEdit', {
@@ -77,7 +84,22 @@ export default {
           'editing': this.editing,
         }
       })
-    }
     },
+    pluralize() {
+      eventBus.$emit('pluralize')
+    },
+    handlePluralize() {
+      this.title = this.title + 'S'
+      eventBus.$emit('finishedEdit', {
+        'index': this.index,
+        'todo': {
+          'id': this.id,
+          'title': this.title,
+          'completed': this.completed,
+          'editing': this.editing,
+        }
+      })
+    },
+    }
 }
 </script>
