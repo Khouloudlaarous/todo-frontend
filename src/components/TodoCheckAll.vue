@@ -12,7 +12,7 @@ export default {
   },
   methods: {
     allChecked() {
-      eventBus.$emit('checkAllChanged', this.anyRemainning)
+      eventBus.$emit('checkAllChanged', this.anyRemaining)
     }
   }
 }
