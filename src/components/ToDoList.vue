@@ -2,7 +2,7 @@
   <div>
      <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-    <todo-item v-for="(todo, index) in todosFiltred" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemainning">
+    <todo-item v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" :checkAll="!anyRemaining">
 
 <!--      <div class="todo-item-left">
         <input type="checkbox" v-model="todo.completed">
@@ -16,7 +16,7 @@
     </todo-item>
     </transition-group>
     <div class="extra-container">
-      <todo-check-all :any-remainning="anyRemainning"></todo-check-all>
+      <todo-check-all :any-remaining="anyRemaining"></todo-check-all>
       <todo-items-remaining :remaining="remaining"></todo-items-remaining>
     </div>
 
@@ -86,14 +86,14 @@ export default {
     eventBus.$off('clearCompletedTodos', () => this.clearCompleted ())
   },
   computed: {
-    remainning() {
+    remaining() {
       return this.todos.filter(todo => !todo.completed).length
     },
 
-    anyRemainning() {
-      return this.remainning !== 0
+    anyRemaining() {
+      return this.remaining !== 0
   },
-    todosFiltred() {
+    todosFiltered() {
       if (this.filter == 'all') {
         return this.todos
       } else if (this.filter == 'active') {

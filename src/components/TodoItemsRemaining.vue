@@ -1,5 +1,5 @@
 <template>
-  <div> {{ remainning }} items left</div>
+  <div> {{ remaining }} items left</div>
 </template>
 <script>
 export default {
