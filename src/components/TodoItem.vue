@@ -48,12 +48,11 @@ export default {
 
   watch: {
     checkAll() {
-      if (this.checkAll) {
-        this.completed = true
-      } else {
-        this.completed = this.todo.completed
+      // if (this.checkAll) {
+      //   this.completed = true
+      // } else {
+        this.completed = this.checkAll ? true : this.todo.completed
       }
-    }
   },
   directive: {
     focus: {
@@ -63,15 +62,16 @@ export default {
     }
   },
   methods: {
-    removeTodo(index) {
-      eventBus.$emit('removedTodo', index)
+    removeTodo(id) {
+      const index = this.$store.state.todos.findIndex(item => item.id === id);
+      this.$store.state.todos.splice(index, 1)
     },
     editTodo() {
       this.beforeEditCache = this.title
       this.editing = true
     },
     doneEdit() {
-      if (this.title.trim() == '') {
+      if (this.title.trim() === '') {
         this.title = this.beforeEditCache
       }
       this.editing = false

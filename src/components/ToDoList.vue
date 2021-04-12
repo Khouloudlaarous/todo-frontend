@@ -63,14 +63,14 @@ export default {
     }
   },
   created() {
-    eventBus.$on('removedTodo', (index) => this.removeTodo(index))
+    // eventBus.$on('removedTodo', (index) => this.removeTodo(index))
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
     eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
     eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
     eventBus.$on('clearCompletedTodos', () => this.clearCompleted ())
   },
   beforeDestroy() {
-    eventBus.$off('removedTodo', (index) => this.removeTodo(index))
+    // eventBus.$off('removedTodo', (index) => this.removeTodo(index))
     eventBus.$off('finishedEdit', (data) => this.finishedEdit(data))
     eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked))
     eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter)
@@ -94,22 +94,23 @@ export default {
 
 
   methods: {
-    addTodo() {
-      if (this.newTodo.trim().length == 0) {
+    addTodo: function () {
+      if (this.newTodo.trim().length === 0) {
         return;
       }
 
       this.$store.state.todos.push({
-        id: this.idForTodo,
-        title: this.newTodo,
-        completed: false,
+        "id": this.idForTodo,
+        "title": this.newTodo,
+        "completed": false,
       });
 
       this.newTodo = ''
       this.idForTodo++
-     },
+    },
 
-     removeTodo(index) {
+     removeTodo(id) {
+       const index = this.$store.state.todos.findIndex(item => item.id === id);
        this.$store.state.todos.splice(index, 1)
      },
 
