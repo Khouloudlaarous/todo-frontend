@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     removeTodo(id) {
-      const index = this.$store.state.todos.findIndex(item => item.id === id);
+      const index = this.$store.state.todos.findIndex(item => item.id == id);
       this.$store.state.todos.splice(index, 1)
     },
     editTodo() {
@@ -75,29 +75,34 @@ export default {
         this.title = this.beforeEditCache
       }
       this.editing = false
-      eventBus.$emit('finishedEdit', {
-        'index': this.index,
-        'todo': {
-          'id': this.id,
-          'title': this.title,
-          'completed': this.completed,
-          'editing': this.editing,
-        }
+      const index = this.$store.state.todos.findIndex(item => item.id == this.id);
+      this.$store.state.todos.splice(index,1,{
+        'id': this.id,
+        'title': this.title,
+        'completed': this.completed,
+        'editing': this.editing,
       })
+
+      // eventBus.$emit('finishedEdit', {
+      //   'index': this.id,
+      //     'id': this.id,
+      //     'title': this.title,
+      //     'completed': this.completed,
+      //     'editing': this.editing,
+      //   }
+      // })
     },
     pluralize() {
       eventBus.$emit('pluralize')
     },
     handlePluralize() {
       this.title = this.title + 'S'
-      eventBus.$emit('finishedEdit', {
-        'index': this.index,
-        'todo': {
-          'id': this.id,
-          'title': this.title,
-          'completed': this.completed,
-          'editing': this.editing,
-        }
+      const index = this.$store.state.todos.findIndex(item => item.id == this.id);
+      this.$store.state.todos.splice(index,1,{
+        'id': this.id,
+        'title': this.title,
+        'completed': this.completed,
+        'editing': this.editing,
       })
     },
     }
