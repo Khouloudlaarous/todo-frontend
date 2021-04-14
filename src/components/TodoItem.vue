@@ -63,25 +63,25 @@ export default {
   },
   methods: {
     removeTodo(id) {
-      const index = this.$store.state.todos.findIndex(item => item.id == id);
-      this.$store.state.todos.splice(index, 1)
-    },
+      this.$store.commit('deleteTodo', id)
+      },
     editTodo() {
       this.beforeEditCache = this.title
       this.editing = true
     },
-    doneEdit() {
+    doneEdit(id) {
       if (this.title.trim() === '') {
         this.title = this.beforeEditCache
       }
       this.editing = false
-      const index = this.$store.state.todos.findIndex(item => item.id == this.id);
-      this.$store.state.todos.splice(index,1,{
+      this.$store.commit('updateTodo', {
         'id': this.id,
         'title': this.title,
         'completed': this.completed,
         'editing': this.editing,
       })
+    },
+
 
       // eventBus.$emit('finishedEdit', {
       //   'index': this.id,
@@ -91,7 +91,7 @@ export default {
       //     'editing': this.editing,
       //   }
       // })
-    },
+
     pluralize() {
       eventBus.$emit('pluralize')
     },
