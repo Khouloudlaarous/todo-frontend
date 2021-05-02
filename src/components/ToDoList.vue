@@ -55,8 +55,6 @@ export default {
       return this.$store.getters.todosFiltered
     }
   },
-
-
   methods: {
     addTodo: function () {
       if (this.newTodo.trim().length === 0) {
