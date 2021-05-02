@@ -4,25 +4,12 @@ import axios from 'axios'
 
 
 Vue.use(Vuex)
-axios.defaults.baseURL = 'http://http://127.0.0.1:8000/api'
+axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
 
 export const store = new Vuex.Store({
   state: {
     filter: 'all',
-    todos: [
-      // {
-      //   'id': 1,
-      //   'title': 'Finish Vue Screencast',
-      //   'completed': false,
-      //   'editing' : false,
-      // },
-      // {
-      //   'id': 2,
-      //   'title': 'Take over Word',
-      //   'completed': false,
-      //   'editing' : false,
-      // },
-    ]
+    todos: []
   },
   getters: {
     remaining(state) {
@@ -105,7 +92,7 @@ export const store = new Vuex.Store({
         })
     },
     updateTodo(context,todo) {
-      axios.patch('/todos/', + todo.id, {
+      axios.patch('/todos/' + todo.id, {
         title: todo.title,
         completed: todo.completed,
       })
@@ -118,7 +105,7 @@ export const store = new Vuex.Store({
 
     },
     deleteTodo(context, id) {
-      axios.delete('/todos/',+ id)
+      axios.delete('/todos/'+id)
         .then(response => {
           context.commit('deleteTodo', id)
         })
